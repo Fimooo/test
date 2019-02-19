@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script>
+    window.onload=function(){
+        let nums = 0;
+        document.querySelector("#submit").addEventListener('click',function(){
+            document.querySelector("#blockIn").innerHTML = ''
+            nums = document.querySelector("#numIn").value;
+            blcokcss(nums)
+            move()
+        })
+        function blcokcss(nums){
+            let doms;
+            for(let i = 0; i < nums; i++){
+                let div = document.createElement('div')
+                document.querySelector("#blockIn").appendChild(div)
+            }
+        }
+        function move(){
+            let flag = true
+            let divs = document.getElementsByTagName('div');
+            for(let i = 0; i < divs.length; i++){
+                divs[i].onclick = function(){
+                    if(flag){
+                        divs[i].style.backgroundColor = 'blue';
+                        flag =false;
+                    }else{
+                        divs[i].style.backgroundColor = 'red';
+                        flag =true;
+                    }
+                }
+                divs[i].onmousemove = function(){
+                    if(flag){
+                        divs[i].style.backgroundColor = 'red';
+                    }
+                }
+
+                divs[i].onmouseout = function(){
+                    if(flag){
+                    divs[i].style.backgroundColor = 'white';
+                    }
+                }
+            }
+        }
+
+    }
+</script>
+<style>
+    div { 
+        border: 1px solid black;
+        width:200px;
+        height: 200px;
+        margin: 10px;
+    }
+
+</style>
+<body>
+    输入所需要的格子数：
+    <input name="numIn" id="numIn"/>
+    <input name="submit" type="button" id="submit" value="提交"/>
+    <section id="blockIn">
+    </section>
+</body>
+</html>
