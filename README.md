@@ -159,5 +159,86 @@ console.log(bag(180,[50,42,9,15,105,63,14,30]))
 </script>
 ```
 
+# test02
+## 输出结果
+```javascript
+let a = (function(x){
+    delete x
+    return x
+})(10)
+console.log(a);
+```
+### 我的思路
+Before:
+
+我在做这道题的时候，认为delete删掉了参数的值，返回一个没有值的x，x为undefined
+
+可是当我去程序运行的时候发现，发现...
+
+最后的输出是：10
 
 
+After:
+
+我做了一个调试
+```javascript
+let a = (function(x){
+    let flag = delete x
+    console.log(flag)   //false
+    console.log(x)      //10
+    return x
+})(10)
+```
+很清晰地可以看到，delete对x的操作并没有完成（delete对完成的操作会返回true）
+
+来让我们去看一下[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/delete)：
+
+    delete 操作符用于删除对象的某个属性；如果没有指向这个属性的引用，那它最终会被释放。
+    
+    语法：delete expression（expression 的计算结果应该是某个属性的引用）
+
+    什么情况下不能删除？
+    
+    ①你试图删除的属性不存在，不作为，但也会返回true
+    
+    ②对象的原型链上有一个同名属性，则只删除自身的同名属性，再访问依旧能访问到该属性（为原型链上继承的属性）
+    
+    ③任何使用 var 声明的属性不能从全局作用域或函数的作用域中删除
+    
+    ```javascript
+    var b = 10;
+    result = delete b
+    console.log(result)   //false
+    //var声明的全局变量，不能删除
+    
+    txt = 'fimo is beautiful'
+    result = delete txt
+    console.log(result)   //true
+    //txt未由var声明，是全局属性，可以删除
+    
+    function c(){
+        var d = 10;
+        result = delete d
+        console.log(result)   //false
+    }
+    c()
+    //对局部变量不起作用
+    
+    let d = {
+        f:function(){}
+    }
+    result = delete d.f
+    console.log(result)    //true
+    //全局内函数无法delete，但是对象内函数可以delete
+    
+    ```
+    
+    ④任何用let或const声明的属性不能够从它被声明的作用域中删除。
+    
+    ⑤不可设置的(Non-configurable)属性不能被移除。这意味着像Math, Array, Object内置对象的属性以及使用Object.defineProperty()方法设置为不可设置的属性不能被删除
+
+    MDN上写的非常详细，结合例子很通俗易懂。
+   
+针对本题：
+
+delete针对对象的属性操作，非局部变量。
