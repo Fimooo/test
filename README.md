@@ -205,7 +205,14 @@ let a = (function(x){
     
     ③任何使用 var 声明的属性不能从全局作用域或函数的作用域中删除
     
-    ```javascript
+   
+    
+    ④任何用let或const声明的属性不能够从它被声明的作用域中删除。
+    
+    ⑤不可设置的(Non-configurable)属性不能被移除。这意味着像Math, Array, Object内置对象的属性以及使用Object.defineProperty()方法设置为不可设置的属性不能被删除
+
+    MDN上写的非常详细，结合例子很通俗易懂。
+```javascript
     var b = 10;
     result = delete b
     console.log(result)   //false
@@ -231,14 +238,7 @@ let a = (function(x){
     console.log(result)    //true
     //全局内函数无法delete，但是对象内函数可以delete
     
-    ```
-    
-    ④任何用let或const声明的属性不能够从它被声明的作用域中删除。
-    
-    ⑤不可设置的(Non-configurable)属性不能被移除。这意味着像Math, Array, Object内置对象的属性以及使用Object.defineProperty()方法设置为不可设置的属性不能被删除
-
-    MDN上写的非常详细，结合例子很通俗易懂。
-   
+```
 针对本题：
 
 delete针对对象的属性操作，非局部变量。
